@@ -317,6 +317,7 @@ const StoreContextProvider = (props) => {
       });
 
       const data = await res.json();
+      console.log(data);
       if (data.success) {
         // Handle success (e.g., navigate to order page or show a confirmation)
         console.log("Order placed successfully", data);
