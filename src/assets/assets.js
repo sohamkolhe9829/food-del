@@ -13,6 +13,7 @@ import menu_8 from "./menu_8.png";
 import rating_starts from "./rating_starts.png";
 import food_1 from "./food_1.png";
 import food_2 from "./food_2.png";
+import tick_icon from "./tick_icon.png";
 import food_3 from "./food_3.png";
 import food_4 from "./food_4.png";
 import food_5 from "./food_5.png";
@@ -57,6 +58,7 @@ import selector_icon from "./selector_icon.png";
 
 export const assets = {
   logo,
+  tick_icon,
   basket_icon,
   header_img,
   search_icon,

@@ -13,11 +13,12 @@
 
 .navbar .logo {
     width: 150px;
+    display: block;
     border: none;
     outline: none;
-    display: block;
     text-decoration: none;
 }
+
 
 .navbar .logo:hover {
     border: none;  /* Ensures there's no border when hovered */

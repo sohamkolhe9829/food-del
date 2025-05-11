@@ -10,13 +10,12 @@ const FoodItem = ({ image, name, price, desc, id }) => {
   return (
     <div className="food-item">
       <div className="food-item-img-container">
-        {/* <img className='food-item-image' src={image} alt="" /> */}
         <img
           className="food-item-image"
           src={`http://localhost:3000/uploads/${image}`}
           alt={name}
         />
-        {!cartItems[id] ? (
+        {!cartItems?.[id] ? (
           <img
             className="add"
             onClick={() => addToCart(id)}

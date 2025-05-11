@@ -1,131 +1,195 @@
-/*import React, { useContext, useState } from 'react'
-import  './Navbar.css'
-import { assets } from '../../assets/assets'
-import { Link } from 'react-router-dom'
-import { StoreContext } from '../../Context/StoreContext'
+// import React, { useContext, useEffect, useState } from "react";
+// import "./Navbar.css";
+// import { assets } from "../../assets/assets";
+// import { Link } from "react-router-dom";
+// import { StoreContext } from "../../Context/StoreContext";
 
-const Navbar = ({setShowLogin}) => {
+// const Navbar = ({ setShowLogin }) => {
+//   const [menu, setMenu] = useState("home");
+//   const [searchOpen, setSearchOpen] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState("");
 
-  const [menu,setMenu] = useState("home");
-  const {getTotalCartAmount} = useContext(StoreContext);
+//   const { getTotalCartAmount, setUserToken, setUserId, userToken } =
+//     useContext(StoreContext);
 
-  return (
-    <div className='navbar'>
-      <Link to='/'><img className='logo' src={assets.logo} alt="" /></Link>
-      <ul className="navbar-menu">
-        <Link to="/" onClick={()=>setMenu("home")} className={`${menu==="home"?"active":""}`}>home</Link>
-        <a href='#explore-menu' onClick={()=>setMenu("menu")} className={`${menu==="menu"?"active":""}`}>menu</a>
-        <a href='#footer' onClick={()=>setMenu("contact")} className={`${menu==="contact"?"active":""}`}>contact us</a>
-        <Link to="/feedback" onClick={() => setMenu("feedback")} className={`${menu === "feedback" ? "active" : ""}`}>feedback</Link>
+//   const handleSearchSubmit = (e) => {
+//     e.preventDefault();
+//     alert(`Searching for: ${searchTerm}`);
+//   };
 
-      </ul>
-      <div className="navbar-right">
-        <img src={assets.search_icon} alt="" />
-        <Link to='/cart' className='navbar-search-icon'>
-          <img src={assets.basket_icon} alt="" />
-          <div className={getTotalCartAmount()>0?"dot":""}></div>
-        </Link>
-        <button onClick={()=>setShowLogin(true)}>sign in</button>
-      </div>
-    </div>
-  )
-}
+//   const handleLogout = () => {
+//     // Remove from localStorage
+//     localStorage.removeItem("token");
+//     localStorage.removeItem("userId");
 
-export default Navbar*/
+//     // Update the context to trigger re-render
+//     setUserToken(null);
+//     setUserId("");
 
-/*import React, { useContext, useEffect, useState } from 'react'
-import './Navbar.css'
-import { assets } from '../../assets/assets'
-import { Link } from 'react-router-dom'
-import { StoreContext } from '../../Context/StoreContext'
+//     alert("Logged out successfully!");
+//   };
+
+//   useEffect(() => {
+//     const handleStorageChange = () => {
+//       const token = localStorage.getItem("token");
+//       if (!token) {
+//         setUserToken(null);
+//         setUserId("");
+//       }
+//     };
+
+//     window.addEventListener("storage", handleStorageChange);
+
+//     // Cleanup event listener on component unmount
+//     return () => window.removeEventListener("storage", handleStorageChange);
+//   }, [setUserToken, setUserId]);
+
+//   return (
+//     <div className="navbar">
+//       <Link to="/">
+//         <img className="logo" src={assets.logo} alt="Logo" />
+//       </Link>
+
+//       <ul className="navbar-menu">
+//         <Link
+//           to="/"
+//           onClick={() => setMenu("home")}
+//           className={menu === "home" ? "active" : ""}
+//         >
+//           home
+//         </Link>
+//         <a
+//           href="#explore-menu"
+//           onClick={() => setMenu("menu")}
+//           className={menu === "menu" ? "active" : ""}
+//         >
+//           menu
+//         </a>
+//         <a
+//           href="#footer"
+//           onClick={() => setMenu("contact")}
+//           className={menu === "contact" ? "active" : ""}
+//         >
+//           contact us
+//         </a>
+//         <Link
+//           to="/feedback"
+//           onClick={() => setMenu("feedback")}
+//           className={menu === "feedback" ? "active" : ""}
+//         >
+//           feedback
+//         </Link>
+//       </ul>
+
+//       <div className="navbar-right">
+//         <img
+//           src={assets.search_icon}
+//           alt="search"
+//           className="search-icon"
+//           onClick={() => setSearchOpen(!searchOpen)}
+//         />
+
+//         {searchOpen && (
+//           <form onSubmit={handleSearchSubmit}>
+//             <input
+//               type="text"
+//               className="search-input"
+//               placeholder="Search food..."
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//             />
+//           </form>
+//         )}
+
+//         <Link to="/cart" className="navbar-search-icon">
+//           <img src={assets.basket_icon} alt="cart" />
+//           <div className={getTotalCartAmount() > 0 ? "dot" : ""}></div>
+//         </Link>
+
+//         {userToken ? (
+//           <button onClick={handleLogout}>logout</button>
+//         ) : (
+//           <button onClick={() => setShowLogin(true)}>sign in</button>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Navbar;
+
+import React, { useContext, useEffect, useState } from "react";
+import "./Navbar.css";
+import { assets } from "../../assets/assets";
+import { Link } from "react-router-dom";
+import { StoreContext } from "../../Context/StoreContext";
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
-  const { getTotalCartAmount } = useContext(StoreContext);
-
-  // Check login status from localStorage on load
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) setIsLoggedIn(true);
-  }, []);
-
-  // Logout handler
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    alert("Logged out successfully");
-  };
-
-  return (
-    <div className='navbar'>
-      <Link to='/'><img className='logo' src={assets.logo} alt="" /></Link>
-      <ul className="navbar-menu">
-        <Link to="/" onClick={() => setMenu("home")} className={`${menu === "home" ? "active" : ""}`}>home</Link>
-        <a href='#explore-menu' onClick={() => setMenu("menu")} className={`${menu === "menu" ? "active" : ""}`}>menu</a>
-        <a href='#footer' onClick={() => setMenu("contact")} className={`${menu === "contact" ? "active" : ""}`}>contact us</a>
-        <Link to="/feedback" onClick={() => setMenu("feedback")} className={`${menu === "feedback" ? "active" : ""}`}>feedback</Link>
-      </ul>
-
-      <div className="navbar-right">
-        <img src={assets.search_icon} alt="search" />
-        <Link to='/cart' className='navbar-search-icon'>
-          <img src={assets.basket_icon} alt="cart" />
-          <div className={getTotalCartAmount() > 0 ? "dot" : ""}></div>
-        </Link>
-        
-        {
-          isLoggedIn ? (
-            <button onClick={handleLogout}>logout</button>
-          ) : (
-            <button onClick={() => setShowLogin(true)}>sign in</button>
-          )
-        }
-      </div>
-    </div>
-  )
-}
-
-export default Navbar before search button main*/
-
-import React, { useContext, useEffect, useState } from 'react'
-import './Navbar.css'
-import { assets } from '../../assets/assets'
-import { Link } from 'react-router-dom'
-import { StoreContext } from '../../Context/StoreContext'
-
-const Navbar = ({ setShowLogin }) => {
-  const [menu, setMenu] = useState("home");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const { getTotalCartAmount } = useContext(StoreContext);
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) setIsLoggedIn(true);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    alert("Logged out successfully");
-  };
+  const { getTotalCartAmount, updateUserSession, userToken } =
+    useContext(StoreContext);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     alert(`Searching for: ${searchTerm}`);
-    // Replace this alert with actual logic or navigation
   };
 
+  const handleLogout = () => {
+    updateUserSession("", ""); // ✅ clear user session
+    alert("Logged out successfully!");
+  };
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("userId");
+      if (!token || !id) {
+        updateUserSession("", "");
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [updateUserSession]);
+
   return (
-    <div className='navbar'>
-      <Link to='/'><img className='logo' src={assets.logo} alt="" /></Link>
+    <div className="navbar">
+      <Link to="/">
+        <img className="logo" src={assets.logo} alt="Logo" />
+      </Link>
+
       <ul className="navbar-menu">
-        <Link to="/" onClick={() => setMenu("home")} className={`${menu === "home" ? "active" : ""}`}>home</Link>
-        <a href='#explore-menu' onClick={() => setMenu("menu")} className={`${menu === "menu" ? "active" : ""}`}>menu</a>
-        <a href='#footer' onClick={() => setMenu("contact")} className={`${menu === "contact" ? "active" : ""}`}>contact us</a>
-        <Link to="/feedback" onClick={() => setMenu("feedback")} className={`${menu === "feedback" ? "active" : ""}`}>feedback</Link>
+        <Link
+          to="/"
+          onClick={() => setMenu("home")}
+          className={menu === "home" ? "active" : ""}
+        >
+          home
+        </Link>
+        <a
+          href="#explore-menu"
+          onClick={() => setMenu("menu")}
+          className={menu === "menu" ? "active" : ""}
+        >
+          menu
+        </a>
+        <a
+          href="#footer"
+          onClick={() => setMenu("contact")}
+          className={menu === "contact" ? "active" : ""}
+        >
+          contact us
+        </a>
+        <Link
+          to="/feedback"
+          onClick={() => setMenu("feedback")}
+          className={menu === "feedback" ? "active" : ""}
+        >
+          feedback
+        </Link>
       </ul>
 
       <div className="navbar-right">
@@ -148,23 +212,19 @@ const Navbar = ({ setShowLogin }) => {
           </form>
         )}
 
-        <Link to='/cart' className='navbar-search-icon'>
+        <Link to="/cart" className="navbar-search-icon">
           <img src={assets.basket_icon} alt="cart" />
           <div className={getTotalCartAmount() > 0 ? "dot" : ""}></div>
         </Link>
 
-        {
-          isLoggedIn ? (
-            <button onClick={handleLogout}>logout</button>
-          ) : (
-            <button onClick={() => setShowLogin(true)}>sign in</button>
-          )
-        }
+        {userToken ? (
+          <button onClick={handleLogout}>logout</button>
+        ) : (
+          <button onClick={() => setShowLogin(true)}>sign in</button>
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
-
-
+export default Navbar;
