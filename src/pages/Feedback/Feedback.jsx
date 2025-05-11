@@ -1,32 +1,39 @@
-/*import React from 'react'
-
-const Feedback = () => {
-  return (
-    <div style={{ padding: "40px", textAlign: "center" }}>
-      <h1>Feedback</h1>
-      <p>We'd love to hear your thoughts about our service!</p>
-      <textarea placeholder="Write your feedback here..." style={{ width: "80%", height: "100px" }} />
-      <br /><br />
-      <button>Submit Feedback</button>
-    </div>
-  )
-}
-
-export default Feedback*/
-
-import React, { useState } from 'react';
-import './FeedbackForm.css';
+import React, { useState } from "react";
+import axios from "axios"; // ✅ Import axios
+import "./FeedbackForm.css";
 
 const FeedbackForm = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [feedback, setFeedback] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [feedback, setFeedback] = useState("");
   const [rating, setRating] = useState(0);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic (e.g., send feedback to a server)
-    alert('Thank you for your feedback!');
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/feedback/submit",
+        {
+          name,
+          email,
+          feedback,
+          rating,
+        }
+      );
+
+      if (response.data.success) {
+        alert("Thank you for your feedback!");
+        setName("");
+        setEmail("");
+        setFeedback("");
+        setRating(0);
+      } else {
+        alert("Failed to submit feedback");
+      }
+    } catch (error) {
+      alert("Error submitting feedback");
+      console.error(error);
+    }
   };
 
   return (
@@ -75,8 +82,13 @@ const FeedbackForm = () => {
             {[...Array(5)].map((_, index) => (
               <span
                 key={index}
-                className={`star ${rating > index ? 'filled' : ''}`}
+                className={`star ${rating > index ? "filled" : ""}`}
                 onClick={() => setRating(index + 1)}
+                style={{
+                  cursor: "pointer",
+                  fontSize: "20px",
+                  color: rating > index ? "#FFD700" : "#ccc",
+                }}
               >
                 ★
               </span>
@@ -93,4 +105,3 @@ const FeedbackForm = () => {
 };
 
 export default FeedbackForm;
-
